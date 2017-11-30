@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Makara</title>
+
+	<meta charset="UTF-8">
+	<meta name="description" content="Another Process Scheduling simulator">
+
+	<link href="images/favicon.ico" rel="icon">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<link href="css/normalize.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  	<script src="js/jquery-touch.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+
+</head>
+<body>
+	<div id="header" class="container-fluid">
+		<div class="row">
+			<div id="logo" class="col-xs-0 col-sm-2 col-xs-offset-1 col-md-offset-2">
+				<img src="images/sea_goat.png" alt="Sea Goat">
+			</div>
+			<div id="title" class="col-xs-8 col-sm-6 col-md-4 col-md-offset-1">
+				Makara - Process Scheduler simulator
+			</div>
+			<div id="controls" class="col-xs-2">
+				<div class="start hidden-xs"></div>
+				<div id="stop"></div>
+				<div class="start visible-xs"></div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row" style="margin-bottom:50px;">
+			<div class="col-xs-6">
+				<div id="tabs">
+					<div id="settings-tab" class="tab active">
+						SETTINGS
+					</div>
+					<div id="lists-tab" class="tab">
+						LISTS
+					</div>
+					<div id="status-tab" class="tab">
+						STATUS
+					</div>
+					<div id="map-tab" class="tab">
+						MAP
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-5">
+				<div style="text-align:center;">
+					Clock<br>
+				</div>
+				<div id="clock"></div>
+			</div>
+			<div id="help" class="col-xs-1 toggle-overlay">
+				<img src="images/help_icon.png" alt="help">
+			</div>
+		</div>			
+
+		<div id="settings" class="row section active">
+			<div class="col-xs-3 setting">
+				1) <u>Boot time</u><br>
+				<input type="text" id="display-boot-time" readonly style="width:5rem">
+				<div id="boot-time" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				2) <u>Scheduling time</u><br>
+				<input type="text" id="display-scheduling-time" readonly style="width:5rem">
+				<div id="scheduling-time" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				3) <u>Creation probability</u><br>
+				<input type="text" id="display-prob" readonly style="width:5rem">
+				<div id="new-process-prob" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				4) <u>Quantum cycles</u><br>
+				<input type="text" id="display-quantum-cycles" readonly style="width:5rem">
+				<div id="quantum-cycles" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				5) <u>Processor cycles</u> (average)<br>
+				<input type="text" id="display-proc-cycles" readonly style="width:5rem;">
+				<div id="proc-cycles" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				6) <u>Processor cycle offset</u><br>
+				<input type="text" id="display-proc-offset" readonly style="width:5rem;">
+				<div id="proc-offset" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				7) <u>I/O cycles</u> (average)<br>
+				<input type="text" id="display-io-cycles" readonly style="width:5rem;">
+				<div id="io-cycles" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				8) <u>I/O cycle offset</u><br>
+				<input type="text" id="display-io-offset" readonly style="width:5rem;">
+				<div id="io-offset" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				9) <u>I/O probability</u><br>
+				<input type="text" id="display-io-prob" readonly style="width:5rem">
+				<div id="io-prob" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				10) <u>Miliseconds per tick</u><br>
+				<input type="text" id="display-time" readonly style="width:5rem">
+				<div id="time-per-tick" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				11) <u>Max. active processes</u><br>
+				<input type="text" id="display-max-processes" readonly style="width:5rem">
+				<div id="max-processes" class="slider"></div>
+			</div>
+			<div class="col-xs-3 setting">
+				12) <u>List capacity</u><br>
+				<input type="text" id="display-list-limit" readonly style="width:5rem">
+				<div id="list-limit" class="slider"></div>
+			</div>
+		</div>
+		<div id="lists" class="row section">
+			<div class="col-xs-4">
+				<div id="new" class="list">
+					NEW
+					<div class="processes"></div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div id="ready" class="list">
+					READY
+					<div class="processes"></div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div id="list-group">
+					<div id="running" class="list">
+						RUNNING
+						<div class="processes"></div>
+					</div>
+					<div id="waiting-io" class="list">
+						WAITING I/O
+						<div class="processes"></div>
+					</div>
+					<div id="using-io" class="list">
+						USING I/O
+						<div class="processes"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<div id="finished" class="list">
+					FINISHED
+					<div class="processes"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="proc-status" class="container section">
+		<div class="row"></div>
+	</div>
+
+	<div id="overlay" class="toggle-overlay">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-md-6">
+					1) Boot time<br>
+					<span class="description">
+						Delay for the simulation to start, given in CPU cycles.
+					</span><br>
+					2) Scheduling time<br>
+					<span class="description">
+						CPU cycles it takes the scheduler to actually take action.
+					</span><br>
+					3) Creation probability<br>
+					<span class="description">
+						Chance that we will get a new process each cycle, given as a 100-based percentage.
+					</span><br>
+					4) Quantum cycles<br>
+					<span class="description">
+						Length of the CPU quantum, given in CPU cycles.
+					</span><br>
+					5) Processor cycles (average)<br>
+					<span class="description">
+						Average CPU cycles that our processes will need.
+					</span><br>
+					6) Processor cycle offset<br>
+					<span class="description">
+						Offset of our CPU cycles average ( &plusmn; )
+					</span><br>
+					7) I/O cycles (average)<br>
+					<span class="description">
+						Average I/O cycles that our processes will need, only if they do need them.
+					</span><br>
+					8) I/O cycle offset<br>
+					<span class="description">
+						Offset of our I/O cycles average ( &plusmn; )
+					</span><br>
+					9) I/O probability<br>
+					<span class="description">
+						Chance that each process will require the use of I/O, given as a 100-based percentage.
+					</span><br>
+					10) Miliseconds per tick<br>
+					<span class="description">
+						Amount of miliseconds that each CPU cycle will take.
+					</span><br>
+					11) Max. active processes<br>
+					<span class="description">
+						Maximum amount of active processes distributed through the simulation.
+					</span><br>
+					12) List capacity<br>
+					<span class="description">
+						Maximum space each list can span, given as a process count.
+					</span>
+				</div><br>
+				<div class="col-xs-12 col-md-6">
+					<strong>Want to find out how each process is doing? Check the status table.</strong>
+					<img src="images/screencap1.png" alt="list image">
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
