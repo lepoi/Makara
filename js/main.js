@@ -100,8 +100,8 @@ $( function() {
 $( function() {
 	$( "#time-per-tick" ).slider({
 		min: 0,
-		max: 3000,
-		value: 1000,
+		max: 2000,
+		value: 150,
 		slide: function( event, ui ) {
 			$( "#display-time" ).val( ui.value );
 		}
@@ -130,6 +130,86 @@ $( function() {
 	});
 	$( "#display-list-limit" ).val( $( "#list-limit" ).slider( "value" ) );
 });
+$( function() {
+	$( "#memory-size" ).slider({
+		min: 32,
+		max: 256,
+		value: 64,
+		step: 4,
+		slide: function( event, ui ) {
+			$( "#display-memory-size" ).val( ui.value );
+		}
+	});
+	$( "#display-memory-size" ).val( $( "#memory-size" ).slider( "value" ) );
+});
+$( function() {
+	$( "#frame-size" ).slider({
+		min: 1,
+		max: 250,
+		value: 20,
+		slide: function( event, ui ) {
+			$( "#frame-size" ).val( ui.value );
+		}
+	});
+	$( "#display-frame-size" ).val( $( "#frame-size" ).slider( "value" ) );
+});
+$( function() {
+	$( "#page-number" ).slider({
+		min: 1,
+		max: 5,
+		value: 4,
+		slide: function( event, ui ) {
+			$( "#display-page-number" ).val( ui.value );
+		}
+	});
+	$( "#display-page-number" ).val( $( "#page-number" ).slider( "value" ) );
+});
+$( function() {
+	$( "#jump-chance" ).slider({
+		min: 0,
+		max: 100,
+		value: 25,
+		slide: function( event, ui ) {
+			$( "#display-jump-chance" ).val( ui.value );
+		}
+	});
+	$( "#display-jump-chance" ).val( $( "#jump-chance" ).slider( "value" ) );
+});
+$( function() {
+	$( "#disk-cycles" ).slider({
+		min: 6,
+		max: 30,
+		value: 10,
+		slide: function( event, ui ) {
+			$( "#display-disk-cycles" ).val( ui.value );
+		}
+	});
+	$( "#display-disk-cycles" ).val( $( "#disk-cycles" ).slider( "value" ) );
+});
+$( function() {
+	$( "#disk-offset" ).slider({
+		min: 0,
+		max: 5,
+		value: 3,
+		slide: function( event, ui ) {
+			$( "#display-disk-offset" ).val( ui.value );
+		}
+	});
+	$( "#display-disk-offset" ).val( $( "#disk-offset" ).slider( "value" ) );
+});
+
+/*
+$( function() {
+	$( "#policy" ).slider({
+		min: 1,
+		max: 250,
+		value: 20,
+		slide: function( event, ui ) {
+			$( "#display-policy" ).val( ui.value );
+		}
+	});
+	$( "#display-policy" ).val( $( "#policy" ).slider( "value" ) );
+});*/
 
 $(document).ready(function(){
 
@@ -184,7 +264,9 @@ $(document).ready(function(){
 	var sections = {
 		'settings-tab': 'settings', 
 		'lists-tab': 'lists',
-		'status-tab': 'proc-status'
+		'status-tab': 'proc-status',
+		'memory-tab': 'memory',
+		'tap-tab': 'tap'
 	};
 	$('.tab').click(function() {
 		if (! $(this).hasClass('active')) {
@@ -200,6 +282,8 @@ $(document).ready(function(){
 		}
 	});
 
+	var i;
+
 	class Process {
 		constructor(name) {
 			this.name = name;
@@ -210,6 +294,10 @@ $(document).ready(function(){
 			this.last_movement = cycle_count;
 			this.cpu_time_required = proc_cycles + Math.floor(Math.random() * (2 * proc_offset + 1) - proc_offset);
 			this.cpu_time_used = 0;
+			this.pages = [];
+
+			for (i = 0; i < page_number; i++)
+				this.pages[i] = new Page();
 
 			if (io_prob > Math.random())
 				this.io_time_required = io_cycles + Math.floor(Math.random() * (2 * io_offset + 1) - io_offset);
@@ -264,28 +352,35 @@ $(document).ready(function(){
 		}
 	}
 
+	class Page {
+		constructor() {
+			this.location = 'disk';
+			this.last_used = null;
+		}
+	}
+
+	class Memory {
+		contructor() {
+			this.processes = [];
+		}
+	}
+
 	function update_display() {
+		$('#clock').text(cycle_count);
+
+		update_lists();
+		update_status();
+		update_memory();
+		update_tap();
+	}
+
+	function update_lists() {
 		new_list.update_text();
 		ready_list.update_text();
 		running_list.update_text();
 		waiting_io_list.update_text();
 		using_io_list.update_text();
 		finished_list.update_text();
-
-		$('#clock').text(cycle_count);
-
-		update_status();
-	}
-
-	function clear_text() {
-		new_list.destination.empty();
-		ready_list.destination.empty();
-		running_list.destination.empty();
-		waiting_io_list.destination.empty();
-		using_io_list.destination.empty();
-		finished_list.destination.empty();
-		$('#proc-status .row').empty();
-		$('#clock').empty();
 	}
 
 	function update_status() {
@@ -312,6 +407,54 @@ $(document).ready(function(){
 		});
 	}
 
+	function update_memory() {
+		//LEFT IT HERE
+
+		$('#memory').html( '<div class="row">' +
+			string +
+			'</div>');
+
+	}
+
+	function update_tap() {
+		string = [];
+		console.log(page_number);
+		for (i = 1; i <= page_number; i++)
+			string +='<div class="col-xs-2">Page ' + i + '</div>';
+
+		$('#tap').html( 
+			'<div class="row">' +
+			'<div class="col-xs-2">Process</div>' + 
+			string + 
+			'</div>' );
+
+		all_list.processes.forEach(function(process) {
+			string = '';
+
+			for (i = 0; i < process.pages.length; i++)
+				string += '<div class="col-xs-2">' + process.pages[i].location + '</div>';
+
+			$('#tap').append( 
+				'<div class="row">' +
+					'<div class="col-xs-2">' + 
+						process.name + 
+					'</div>' + 
+					string +
+				'</div>' );
+		});
+	}
+
+	function clear_text() {
+		new_list.destination.empty();
+		ready_list.destination.empty();
+		running_list.destination.empty();
+		waiting_io_list.destination.empty();
+		using_io_list.destination.empty();
+		finished_list.destination.empty();
+		$('#proc-status .row').empty();
+		$('#clock').empty();
+	}
+
 	function initialize() {
 		running = false;
 		cycle_count = 0;
@@ -331,6 +474,12 @@ $(document).ready(function(){
 		waiting_io_list = new List($('#waiting-io .processes'),'waiting-io');
 		using_io_list = new List($('#using-io .processes'),'using-io');
 		finished_list = new List($('#finished .processes'),'finished');
+
+		memory_size = $('#memory_size').slider('value');
+		os_memory = memory_size / 4;
+		memory = new Memory();
+
+		frame_size = $('#frame-size').slider('value');
 
 		clear_text();
 		$('#clock').text(cycle_count);
@@ -353,6 +502,13 @@ $(document).ready(function(){
 		io_prob = $('#io-prob').slider('value') / 100;
 		io_cycles = $('#io-cycles').slider('value');
 		io_offset = $('#io-offset').slider('value');
+
+
+		disk_cycles = $('#disk-cycles').slider('value');
+		disk_offset = $('#disk-offset').slider('value');
+
+		page_number = $('#page-number').slider('value');
+		jump_chance = $('#jump_chance').slider('value');
 	}
 
 	function stop() {

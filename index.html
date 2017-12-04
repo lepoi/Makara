@@ -49,8 +49,11 @@
 					<div id="status-tab" class="tab">
 						STATUS
 					</div>
-					<div id="map-tab" class="tab">
-						MAP
+					<div id="memory-tab" class="tab">
+						MEMORY
+					</div>
+					<div id="tap-tab" class="tab">
+						TAP
 					</div>
 				</div>
 			</div>
@@ -68,66 +71,107 @@
 
 		<div id="settings" class="row section active">
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				1) <u>Boot time</u><br>
+				<u>Boot time</u><br>
 				<input type="text" id="display-boot-time" readonly style="width:5rem">
 				<div id="boot-time" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				2) <u>Scheduling time</u><br>
+				<u>Scheduling time</u><br>
 				<input type="text" id="display-scheduling-time" readonly style="width:5rem">
 				<div id="scheduling-time" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				3) <u>Creation probability</u><br>
+				<u>Creation probability</u><br>
 				<input type="text" id="display-prob" readonly style="width:5rem">
 				<div id="new-process-prob" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				4) <u>Quantum cycles</u><br>
+				<u>Quantum cycles</u><br>
 				<input type="text" id="display-quantum-cycles" readonly style="width:5rem">
 				<div id="quantum-cycles" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				5) <u>Processor cycles</u> (average)<br>
+				<u>Processor cycles</u> (average)<br>
 				<input type="text" id="display-proc-cycles" readonly style="width:5rem;">
 				<div id="proc-cycles" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				6) <u>Processor cycle offset</u><br>
+				<u>Processor cycle offset</u><br>
 				<input type="text" id="display-proc-offset" readonly style="width:5rem;">
 				<div id="proc-offset" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				7) <u>I/O cycles</u> (average)<br>
+				<u>I/O cycles</u> (average)<br>
 				<input type="text" id="display-io-cycles" readonly style="width:5rem;">
 				<div id="io-cycles" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				8) <u>I/O cycle offset</u><br>
+				<u>I/O cycle offset</u><br>
 				<input type="text" id="display-io-offset" readonly style="width:5rem;">
 				<div id="io-offset" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				9) <u>I/O probability</u><br>
+				<u>I/O probability</u><br>
 				<input type="text" id="display-io-prob" readonly style="width:5rem">
 				<div id="io-prob" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				10) <u>Miliseconds per tick</u><br>
+				<u>Miliseconds per tick</u><br>
 				<input type="text" id="display-time" readonly style="width:5rem">
 				<div id="time-per-tick" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				11) <u>Max. active processes</u><br>
+				<u>Max. active processes</u><br>
 				<input type="text" id="display-max-processes" readonly style="width:5rem">
 				<div id="max-processes" class="slider"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
-				12) <u>List capacity</u><br>
+				<u>List capacity</u><br>
 				<input type="text" id="display-list-limit" readonly style="width:5rem">
 				<div id="list-limit" class="slider"></div>
 			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
+				<u>Memory size</u> (in KB)<br>
+				<input type="text" id="display-memory-size" readonly style="width:5rem">
+				<div id="memory-size" class="slider"></div>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
+				<u>Frame size</u><br>
+				<input type="text" id="display-frame-size" readonly style="width:5rem">
+				<div id="frame-size" class="slider"></div>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
+				<u>Number of pages</u><br>
+				<input type="text" id="display-page-number" readonly style="width:5rem">
+				<div id="page-number" class="slider"></div>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
+				<u>Salto de p&aacute;gina</u><br>
+				<input type="text" id="display-jump-chance" readonly style="width:5rem">
+				<div id="jump-chance" class="slider"></div>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
+				<u>Disk cycles</u> (average)<br>
+				<input type="text" id="display-disk-cycles" readonly style="width:5rem;">
+				<div id="disk-cycles" class="slider"></div>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
+				<u>Disk cycle offset</u><br>
+				<input type="text" id="display-disk-offset" readonly style="width:5rem;">
+				<div id="disk-offset" class="slider"></div>
+			</div>
+
+			<!--
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 setting">
+				<u>Policy</u><br>
+				<input type="text" id="display-policy" readonly style="width:5rem">
+				<div id="policy" class="slider"></div>
+			</div>
+			-->
 		</div>
+	</div>
+
+	<div class="container">
 		<div id="lists" class="row section">
 			<div class="col-xs-4">
 				<div id="new" class="list">
@@ -168,6 +212,12 @@
 	
 	<div id="proc-status" class="container section">
 		<div class="row"></div>
+	</div>
+
+	<div id="memory" class="container section">
+	</div>
+
+	<div id="tap" class="container section">
 	</div>
 
 	<div id="overlay" class="toggle-overlay">
